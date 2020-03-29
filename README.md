@@ -16,4 +16,41 @@ Ho: (u1-u2) = 0
 
 Ha: (u1-u2) < 0
 
-## 
+## Test Statistic
+
+![summary](summary_workplace.png)
+
+Using the formula z = (x-bar1 - x-bar2) - 0 / sqrt( (s^2 / n1) + (s^2 / n2) ) and the information above, we find that our test statistic z is -2.80772. To use a rejection zone, we need to know the z critical value corresponding to an area of .01. Looking at a table, we find that z(.01) = -2.33. Since -2.80772 < -2.33, we have enough evidence to prove that the true average performance level of the rudeness group is lower than the control's group average performace level. To find the p-value, we need to find the P(z <-2.80772). Looking at the table, we find that z(-2.81) = .4975. Our p-value is 1-.4975 = .0025. Since this number is lower than our alpha, we can reject the null hypothesis.
+
+### Large Independent Samples Confidence Interval for u1 - u2.
+
+We construct a 99% confidence interval by using the formula (xbar1-xbar2) +/- 2.33 * sqrt( (s^2 / n1) + (s^2 / n2) ). Since this is a one sided-test, we only report the second part of the interval. We are 99% confident that the true mean performance level of the rudeness group is (-Inf, -0.5617) less than the mean performance level of the control group.
+
+### Doing the Test in R
+```
+library(BSDA)
+library(tidyverse)
+workplace <- read.csv("RUDE.csv",header = TRUE)
+
+#Seperates Data into Two Conditions
+
+rude <- workplace %>%
+  filter(Condition=="Rude")
+control <- workplace %>%
+  filter(Condition=="Control")
+
+z.test(rude$UsesBrick,control$UsesBrick,alternative = "less",mu=0,sigma.x=3.992164,sigma.y=7.382559,conf.level = .99)
+
+###Two-sample z-Test
+
+### data:  rude$UsesBrick and control$UsesBrick
+### z = -2.8068, p-value = 0.002502
+### alternative hypothesis: true difference in means is less than 0
+### 99 percent confidence interval:
+### NA -0.5648886
+### sample estimates:
+### mean of x mean of y 
+    8.511111 11.811321 
+```
+
+
